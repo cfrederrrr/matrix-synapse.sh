@@ -1,0 +1,19 @@
+[Unit]
+Description=nginx reverse proxy
+Wants=network-online.target
+After=network-online.target
+
+[Container]
+Image=docker.io/library/nginx:alpine
+ContainerName=nginx
+Network=${APP_NAME}
+PublishPort=80:80
+PublishPort=443:443
+Volume=/var/local/${APP_NAME}/files/nginx/nginx.conf:/etc/nginx/nginx.conf:ro,z
+Volume=letsencrypt:/etc/letsencrypt:ro
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

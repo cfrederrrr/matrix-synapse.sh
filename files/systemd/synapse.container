@@ -1,0 +1,18 @@
+[Unit]
+Description=Matrix Synapse homeserver
+Wants=network-online.target
+After=network-online.target
+
+[Container]
+Image=localhost/synapse-s3:latest
+ContainerName=synapse
+
+Network=${APP_NAME}
+Volume=synapse-data:/data
+
+[Service]
+Restart=always
+TimeoutStartSec=120
+
+[Install]
+WantedBy=default.target

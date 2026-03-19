@@ -1,0 +1,19 @@
+[Unit]
+Description=Certbot certificate renewal
+
+[Container]
+Image=docker.io/certbot/dns-digitalocean:latest
+ContainerName=certbot
+
+Volume=letsencrypt:/etc/letsencrypt
+# DO API credentials file — place at /etc/certbot/digitalocean.ini on the host
+# Contents:  dns_digitalocean_token = YOUR_DO_API_TOKEN
+Volume=/var/local/${APP_NAME}/digitalocean.ini:/credentials/digitalocean.ini:ro,z
+
+Exec=renew
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+# Reload nginx after renewal so it picks up any new certificates
+ExecStartPost=-podman exec nginx nginx -s reload

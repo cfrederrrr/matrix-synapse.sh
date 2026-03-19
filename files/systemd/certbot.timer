@@ -1,0 +1,11 @@
+[Unit]
+Description=Certbot certificate renewal timer
+
+[Timer]
+# Run twice daily — certbot only actually renews when certs are within 30 days of expiry
+OnCalendar=*-*-* 06,18:00:00
+RandomizedDelaySec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target
